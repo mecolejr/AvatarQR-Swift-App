@@ -31,6 +31,6 @@ let package = Package(
         .testTarget(
             name: "AvatarQRTests",
             dependencies: ["AvatarQRLib"],
-            path: "Tests"),
+            path: "Tests/AvatarQRTests"),
     ]
 ) 
