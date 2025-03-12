@@ -20,7 +20,6 @@
 		8A1234561234567800000004 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		8A1234561234567800000006 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8A1234561234567800000008 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		8A1234561234567800000021 /* AvatarQR */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = AvatarQR; path = ..; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,19 +64,10 @@
 		8A123456123456780000000E = {
 			isa = PBXGroup;
 			children = (
-				8A1234561234567800000022 /* Packages */,
 				8A123456123456780000000C /* AvatarQRApp */,
 				8A123456123456780000000B /* Products */,
 				8A1234561234567800000023 /* Frameworks */,
 			);
-			sourceTree = "<group>";
-		};
-		8A1234561234567800000022 /* Packages */ = {
-			isa = PBXGroup;
-			children = (
-				8A1234561234567800000021 /* AvatarQR */,
-			);
-			name = Packages;
 			sourceTree = "<group>";
 		};
 		8A1234561234567800000023 /* Frameworks */ = {
@@ -135,6 +125,7 @@
 			);
 			mainGroup = 8A123456123456780000000E;
 			packageReferences = (
+				8A1234561234567800000024 /* RemoteSwiftPackageReference "AvatarQR" */,
 			);
 			productRefGroup = 8A123456123456780000000B /* Products */;
 			projectDirPath = "";
@@ -370,9 +361,21 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		8A1234561234567800000024 /* RemoteSwiftPackageReference "AvatarQR" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mecolejr/AvatarQR.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		8A1234561234567800000020 /* AvatarQRLib */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = 8A1234561234567800000024 /* RemoteSwiftPackageReference "AvatarQR" */;
 			productName = AvatarQRLib;
 		};
 /* End XCSwiftPackageProductDependency section */
