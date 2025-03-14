@@ -30,8 +30,6 @@ class AvatarViewModel: ObservableObject {
         loadSavedAvatars()
     }
     
-    // ... existing code ...
-    
     func saveAvatar() {
         // Check if this avatar already exists
         if let index = savedAvatars.firstIndex(where: { $0.id == avatar.id }) {
@@ -48,15 +46,48 @@ class AvatarViewModel: ObservableObject {
     }
     
     func deleteAvatar(_ avatar: Avatar) {
-        savedAvatars.removeAll(where: { $0.id == avatar.id })
+        savedAvatars.removeAll { $0.id == avatar.id }
         saveAvatars()
     }
     
-    func updateAvatar(_ updatedAvatar: Avatar) {
-        if let index = savedAvatars.firstIndex(where: { $0.id == updatedAvatar.id }) {
-            savedAvatars[index] = updatedAvatar
-            saveAvatars()
-        }
+    func loadAvatar(_ avatar: Avatar) {
+        self.avatar = avatar
+    }
+    
+    func updateAvatarName(_ name: String) {
+        avatar.name = name
+    }
+    
+    func updateHairStyle(_ hairStyle: HairStyle) {
+        avatar.hairStyle = hairStyle
+    }
+    
+    func updateHairColor(_ color: AvatarColor) {
+        avatar.hairColor = color
+    }
+    
+    func updateSkinTone(_ color: AvatarColor) {
+        avatar.skinTone = color
+    }
+    
+    func updateEyeColor(_ color: AvatarColor) {
+        avatar.eyeColor = color
+    }
+    
+    func updateFacialFeature(_ feature: FacialFeature) {
+        avatar.facialFeature = feature
+    }
+    
+    func updateAccessory(_ accessory: Accessory) {
+        avatar.accessory = accessory
+    }
+    
+    func updateAccessoryColor(_ color: AvatarColor) {
+        avatar.accessoryColor = color
+    }
+    
+    func updateBackgroundColor(_ color: AvatarColor) {
+        avatar.backgroundColor = color
     }
     
     private func saveAvatars() {
@@ -69,9 +100,9 @@ class AvatarViewModel: ObservableObject {
     
     private func loadSavedAvatars() {
         if #available(macOS 11.0, iOS 14.0, *) {
-            if let savedAvatarsData = UserDefaults.standard.data(forKey: saveKey),
-               let decodedAvatars = try? JSONDecoder().decode([Avatar].self, from: savedAvatarsData) {
-                savedAvatars = decodedAvatars
+            if let savedData = UserDefaults.standard.data(forKey: saveKey),
+               let decodedAvatars = try? JSONDecoder().decode([Avatar].self, from: savedData) {
+                self.savedAvatars = decodedAvatars
             }
         }
     }
