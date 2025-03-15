@@ -10,7 +10,9 @@ struct AvatarCustomizationView: View {
     enum CustomizationCategory: String, CaseIterable {
         case hair = "Hair"
         case face = "Face"
-        case style = "Style"
+        case glasses = "Glasses"
+        case clothing = "Clothing"
+        case accessory = "Accessory"
         case color = "Color"
     }
     
@@ -49,8 +51,12 @@ struct AvatarCustomizationView: View {
                     hairCustomizationView
                 case .face:
                     faceCustomizationView
-                case .style:
-                    styleCustomizationView
+                case .glasses:
+                    glassesCustomizationView
+                case .clothing:
+                    clothingCustomizationView
+                case .accessory:
+                    accessoryCustomizationView
                 case .color:
                     colorCustomizationView
                 }
@@ -223,7 +229,149 @@ struct AvatarCustomizationView: View {
         }
     }
     
-    private var styleCustomizationView: some View {
+    private var glassesCustomizationView: some View {
+        VStack(alignment: .leading) {
+            Text("Glasses Style")
+                .font(.headline)
+                .padding(.horizontal)
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 20) {
+                    ForEach(Glasses.allCases, id: \.self) { glasses in
+                        VStack {
+                            if let imageName = glasses.systemImageName {
+                                Image(systemName: imageName)
+                                    .font(.system(size: 30))
+                                    .foregroundColor(viewModel.avatar.glassesColor.color)
+                                    .frame(width: 50, height: 50)
+                                    .background(viewModel.avatar.glasses == glasses ? Color.blue.opacity(0.3) : Color.clear)
+                                    .cornerRadius(10)
+                                    .onTapGesture {
+                                        var updatedAvatar = viewModel.avatar
+                                        updatedAvatar.glasses = glasses
+                                        viewModel.avatar = updatedAvatar
+                                    }
+                            } else {
+                                Rectangle()
+                                    .fill(Color.gray.opacity(0.3))
+                                    .frame(width: 50, height: 50)
+                                    .cornerRadius(10)
+                                    .overlay(Text("None"))
+                                    .onTapGesture {
+                                        var updatedAvatar = viewModel.avatar
+                                        updatedAvatar.glasses = glasses
+                                        viewModel.avatar = updatedAvatar
+                                    }
+                            }
+                            
+                            Text(glasses.displayName)
+                                .font(.caption)
+                        }
+                    }
+                }
+                .padding()
+            }
+            
+            if viewModel.avatar.glasses != .none {
+                Text("Glasses Color")
+                    .font(.headline)
+                    .padding(.horizontal)
+                
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 15) {
+                        ForEach(AvatarColor.allCases, id: \.self) { color in
+                            Circle()
+                                .fill(color.color)
+                                .frame(width: 40, height: 40)
+                                .overlay(
+                                    Circle()
+                                        .stroke(viewModel.avatar.glassesColor == color ? Color.blue : Color.clear, lineWidth: 3)
+                                )
+                                .onTapGesture {
+                                    var updatedAvatar = viewModel.avatar
+                                    updatedAvatar.glassesColor = color
+                                    viewModel.avatar = updatedAvatar
+                                }
+                        }
+                    }
+                    .padding()
+                }
+            }
+        }
+    }
+    
+    private var clothingCustomizationView: some View {
+        VStack(alignment: .leading) {
+            Text("Clothing Style")
+                .font(.headline)
+                .padding(.horizontal)
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 20) {
+                    ForEach(Clothing.allCases, id: \.self) { clothing in
+                        VStack {
+                            if let imageName = clothing.systemImageName {
+                                Image(systemName: imageName)
+                                    .font(.system(size: 30))
+                                    .foregroundColor(viewModel.avatar.clothingColor.color)
+                                    .frame(width: 50, height: 50)
+                                    .background(viewModel.avatar.clothing == clothing ? Color.blue.opacity(0.3) : Color.clear)
+                                    .cornerRadius(10)
+                                    .onTapGesture {
+                                        var updatedAvatar = viewModel.avatar
+                                        updatedAvatar.clothing = clothing
+                                        viewModel.avatar = updatedAvatar
+                                    }
+                            } else {
+                                Rectangle()
+                                    .fill(Color.gray.opacity(0.3))
+                                    .frame(width: 50, height: 50)
+                                    .cornerRadius(10)
+                                    .overlay(Text("None"))
+                                    .onTapGesture {
+                                        var updatedAvatar = viewModel.avatar
+                                        updatedAvatar.clothing = clothing
+                                        viewModel.avatar = updatedAvatar
+                                    }
+                            }
+                            
+                            Text(clothing.displayName)
+                                .font(.caption)
+                        }
+                    }
+                }
+                .padding()
+            }
+            
+            if viewModel.avatar.clothing != .none {
+                Text("Clothing Color")
+                    .font(.headline)
+                    .padding(.horizontal)
+                
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 15) {
+                        ForEach(AvatarColor.allCases, id: \.self) { color in
+                            Circle()
+                                .fill(color.color)
+                                .frame(width: 40, height: 40)
+                                .overlay(
+                                    Circle()
+                                        .stroke(viewModel.avatar.clothingColor == color ? Color.blue : Color.clear, lineWidth: 3)
+                                )
+                                .onTapGesture {
+                                    var updatedAvatar = viewModel.avatar
+                                    updatedAvatar.clothingColor = color
+                                    viewModel.avatar = updatedAvatar
+                                }
+                        }
+                    }
+                    .padding()
+                }
+            }
+        }
+    }
+    
+    private var accessoryCustomizationView: some View {
         VStack(alignment: .leading) {
             Text("Accessory")
                 .font(.headline)
