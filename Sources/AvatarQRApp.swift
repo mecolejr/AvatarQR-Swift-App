@@ -5,9 +5,28 @@ import SwiftUI
 @main
 #endif
 struct AvatarQRApp: App {
+    @StateObject private var preferencesManager = UserPreferencesManager.shared
+    @State private var isOnboardingCompleted: Bool
+    
+    init() {
+        _isOnboardingCompleted = State(initialValue: UserPreferencesManager.shared.hasCompletedOnboarding)
+    }
+    
     var body: some Scene {
         WindowGroup {
-            MainView()
+            if isOnboardingCompleted {
+                MainView()
+                    .preferredColorScheme(preferencesManager.appTheme.colorScheme)
+                    .environmentObject(preferencesManager)
+            } else {
+                OnboardingView(isOnboardingCompleted: $isOnboardingCompleted)
+                    .onDisappear {
+                        // Update the preferences manager when onboarding is completed
+                        preferencesManager.hasCompletedOnboarding = isOnboardingCompleted
+                    }
+                    .preferredColorScheme(preferencesManager.appTheme.colorScheme)
+                    .environmentObject(preferencesManager)
+            }
         }
     }
 }
@@ -17,9 +36,13 @@ struct AvatarQRApp: App {
 @available(macOS, deprecated: 11.0)
 @available(iOS, deprecated: 14.0)
 struct AvatarQRAppLegacy: App {
+    @StateObject private var preferencesManager = UserPreferencesManager.shared
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .preferredColorScheme(preferencesManager.appTheme.colorScheme)
+                .environmentObject(preferencesManager)
         }
     }
 }

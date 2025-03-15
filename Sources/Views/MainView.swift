@@ -238,6 +238,9 @@ struct SettingsView: View {
     @AppStorage("userName") private var userName: String = ""
     @AppStorage("notificationsEnabled") private var notificationsEnabled: Bool = true
     @AppStorage("darkModeEnabled") private var darkModeEnabled: Bool = false
+    @EnvironmentObject private var preferencesManager: UserPreferencesManager
+    @State private var showingResetConfirmation = false
+    @State private var showingOnboardingResetConfirmation = false
     
     var body: some View {
         Form {
@@ -248,7 +251,51 @@ struct SettingsView: View {
             
             Section(header: Text("Preferences")) {
                 Toggle("Enable Notifications", isOn: $notificationsEnabled)
-                Toggle("Dark Mode", isOn: $darkModeEnabled)
+                
+                Picker("App Theme", selection: $preferencesManager.appTheme) {
+                    ForEach(AppTheme.allCases, id: \.self) { theme in
+                        Text(theme.rawValue).tag(theme)
+                    }
+                }
+                .pickerStyle(SegmentedPickerStyle())
+                .padding(.vertical, 5)
+            }
+            
+            Section(header: Text("Onboarding")) {
+                Button("Reset Onboarding Experience") {
+                    showingOnboardingResetConfirmation = true
+                }
+                .foregroundColor(.blue)
+                .alert(isPresented: $showingOnboardingResetConfirmation) {
+                    Alert(
+                        title: Text("Reset Onboarding"),
+                        message: Text("This will show the onboarding screens again the next time you launch the app. Are you sure?"),
+                        primaryButton: .destructive(Text("Reset")) {
+                            preferencesManager.hasCompletedOnboarding = false
+                        },
+                        secondaryButton: .cancel()
+                    )
+                }
+            }
+            
+            Section(header: Text("Data Management")) {
+                Button("Reset All Preferences") {
+                    showingResetConfirmation = true
+                }
+                .foregroundColor(.red)
+                .alert(isPresented: $showingResetConfirmation) {
+                    Alert(
+                        title: Text("Reset All Preferences"),
+                        message: Text("This will reset all app preferences to their default values. This action cannot be undone. Are you sure?"),
+                        primaryButton: .destructive(Text("Reset")) {
+                            preferencesManager.resetAllPreferences()
+                            userName = ""
+                            notificationsEnabled = true
+                            darkModeEnabled = false
+                        },
+                        secondaryButton: .cancel()
+                    )
+                }
             }
             
             Section(header: Text("App Info")) {
@@ -272,8 +319,15 @@ struct SettingsView: View {
                     .font(.body)
                     .foregroundColor(.gray)
                     .padding(.vertical, 5)
+                
+                Link("Visit Website", destination: URL(string: "https://example.com/avatarqr")!)
+                    .foregroundColor(.blue)
+                
+                Link("Privacy Policy", destination: URL(string: "https://example.com/avatarqr/privacy")!)
+                    .foregroundColor(.blue)
             }
         }
+        .navigationTitle("Settings")
     }
 }
 
